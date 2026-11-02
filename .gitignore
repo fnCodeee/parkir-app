@@ -1,0 +1,18 @@
+# Dependensi
+node_modules/
+vendor/
+
+# File sensitif
+.env
+.env.local
+
+# Sistem & IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Build & Log
+build/
+dist/
+*.log   

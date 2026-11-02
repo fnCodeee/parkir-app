@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>Sistem Parkir Kampus</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">🅿️ Parkir Kampus Kelompok 4</a>
+            <div>
+                <a class="btn btn-outline-light me-2" href="/">Dashboard</a>
+                <a class="btn btn-outline-light me-2" href="/masuk">Input Masuk</a>
+                <a class="btn btn-outline-light me-2" href="/riwayat">Riwayat & Keluar</a>
+                <a class="btn btn-outline-light" href="/pemilik">Data Pemilik</a>
+            </div>
+        </div>
+    </nav>  
+
+    <div class="container">
+        <h2 class="mb-4">Dashboard Beban & Pendapatan Parkir</h2>
+
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card text-white bg-primary p-3">
+                    <h5>Total Transaksi Selesai</h5>
+                    <h3><%= stats.total_transaksi_selesai %> Transaksi</h3>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-success p-3">
+                    <h5>Total Pendapatan Parkir</h5>
+                    <h3>Rp <%= Number(stats.total_pendapatan_keseluruhan).toLocaleString('id-ID') %></h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-white">
+                <h5 class="mb-0">Rekapitulasi Per Area Parkir (SUM & COUNT)</h5>
+            </div>
+            <div class="card-body p-0">
+                <table class="table table-striped mb-0">
+                    <thead>
+                        <tr>
+                            <th>ID Area</th>
+                            <th>Nama Area</th>
+                            <th>Kapasitas</th>
+                            <th>Total Kendaraan Masuk</th>
+                            <th>Total Pendapatan</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% rekapArea.forEach(area => { %>
+                            <tr>
+                                <td><%= area.id %></td>
+                                <td><%= area.nama_area %></td>
+                                <td><%= area.kapasitas %> Kendaraan</td>
+                                <td><%= area.total_transaksi %> Kali</td>
+                                <td>Rp <%= Number(area.total_pendapatan).toLocaleString('id-ID') %></td>
+                            </tr>
+                        <% }) %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

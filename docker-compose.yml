@@ -1,0 +1,41 @@
+services:
+  app:
+    build: .
+    container_name: parkir-app
+    ports:
+      - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=${DB_USER:-parkir-app}
+      - DB_PASSWORD=${DB_PASSWORD:-parkir123}
+      - DB_NAME=${DB_NAME:-db_parkir}
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.0
+    container_name: parkir-mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD:-root123}
+      - MYSQL_DATABASE=${DB_NAME:-db_parkir}
+    volumes:
+      - db_data:/var/lib/mysql
+      # Import struktur + data awal (hanya saat volume kosong / pertama kali)
+      - ./database-parkir.sql:/docker-entrypoint-initdb.d/01-database-parkir.sql:ro
+      # Buat user aplikasi (parkir-app) setelah database ada
+      - ./docker/init/create-user.sql:/docker-entrypoint-initdb.d/02-create-user.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+    restart: unless-stopped
+    # Port di-publish hanya untuk akses admin/debug dari host (opsional)
+    ports:
+      - "3306:3306"
+
+volumes:
+  db_data:
